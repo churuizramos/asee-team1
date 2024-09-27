@@ -11,8 +11,8 @@ void setup() {
 }
 
 void loop() {
-  // digitalWrite(driverIN1, HIGH);
-  // digitalWrite(driverIN2, LOW);
+  digitalWrite(driverIN1, HIGH);
+  digitalWrite(driverIN2, LOW);
   
   // put your main code here, to run repeatedly:
   // switch (digitalRead(button)) {
@@ -26,4 +26,5 @@ void loop() {
   //     digitalWrite(driverIN2, LOW);
   //     break;
   // }
+  delay(250);
 }
