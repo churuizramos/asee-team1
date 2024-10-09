@@ -1,30 +1,50 @@
-int driverIN1 = 2;
-int driverIN2 = 3;
-int button = 13;
+// Motor driver pins
+int M1pos = 2;
+int M1neg = 3;
+int M2pos = 4;
+int M2neg = 5;
+
+// IR sensor pins
+int rightIR = 6;
+int leftIR = 7;
 
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(driverIN1, OUTPUT);
-  pinMode(driverIN2, OUTPUT);
+  pinMode(M1pos, OUTPUT);
+  pinMode(M1neg, OUTPUT);
+  pinMode(M2pos, OUTPUT);
+  pinMode(M2neg, OUTPUT);
 
-  pinMode(button, INPUT);
+  pinMode(rightIR, INPUT);
+  pinMode(leftIR, INPUT);
+}
+
+void forRight() { // turn right with left off
+  digitalWrite(M1pos, HIGH);
+  digitalWrite(M1neg, LOW);
+}
+void forLeft() { // turn left with right off
+  digitalWrite(M2pos, HIGH);
+  digitalWrite(M2neg, LOW);
+}
+void forward() { // forward both
+  digitalWrite(M1pos, HIGH);
+  digitalWrite(M1neg, LOW);
+  digitalWrite(M2pos, HIGH);
+  digitalWrite(M2neg, LOW);
+}
+
+void runLoop() {
+  if (digitalRead(rightIR) == LOW) {
+    forLeft();
+  }
+  if (digitalRead(leftIR) == LOW) {
+    forRight();
+  }
+  else {
+    forward();
+  }
 }
 
 void loop() {
-  digitalWrite(driverIN1, HIGH);
-  digitalWrite(driverIN2, LOW);
-  
-  // put your main code here, to run repeatedly:
-  // switch (digitalRead(button)) {
-  //   case HIGH:
-  //     digitalWrite(driverIN1, HIGH);
-  //     digitalWrite(driverIN2, LOW);
-  //     break;
-
-  //   case LOW:
-  //     digitalWrite(driverIN1, LOW);
-  //     digitalWrite(driverIN2, LOW);
-  //     break;
-  // }
-  delay(250);
+  runLoop();
 }
