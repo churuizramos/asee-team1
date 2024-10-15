@@ -1,50 +1,46 @@
 // Motor driver pins
-int M1pos = 2;
-int M1neg = 3;
-int M2pos = 4;
-int M2neg = 5;
+int MRpos = 2;
+int MRneg = 3;
+int MLpos = 4;
+int MLneg = 5;
 
 // IR sensor pins
 int rightIR = 6;
 int leftIR = 7;
 
 void setup() {
-  pinMode(M1pos, OUTPUT);
-  pinMode(M1neg, OUTPUT);
-  pinMode(M2pos, OUTPUT);
-  pinMode(M2neg, OUTPUT);
+  pinMode(MRpos, OUTPUT);
+  pinMode(MRneg, OUTPUT);
+  pinMode(MLpos, OUTPUT);
+  pinMode(MLneg, OUTPUT);
 
   pinMode(rightIR, INPUT);
   pinMode(leftIR, INPUT);
 }
 
-void forRight() { // turn right with left off
-  digitalWrite(M1pos, HIGH);
-  digitalWrite(M1neg, LOW);
+// booleans for the IR sensors
+bool leftSensor() {
+  return (digitalRead(leftIR) == LOW);
 }
-void forLeft() { // turn left with right off
-  digitalWrite(M2pos, HIGH);
-  digitalWrite(M2neg, LOW);
+bool rightSensor() {
+  return (digitalRead(rightIR) == LOW);
 }
-void forward() { // forward both
-  digitalWrite(M1pos, HIGH);
-  digitalWrite(M1neg, LOW);
-  digitalWrite(M2pos, HIGH);
-  digitalWrite(M2neg, LOW);
+
+
+void run(byte rightP, byte rightN, byte leftP, byte leftN) {
+  digitalWrite(MRpos,rightP);
+  digitalWrite(MRneg,rightN);
+  digitalWrite(MLpos,leftP);
+  digitalWrite(MLneg,leftN);
 }
 
 void runLoop() {
-  if (digitalRead(rightIR) == LOW) {
-    forLeft();
-  }
-  if (digitalRead(leftIR) == LOW) {
-    forRight();
-  }
-  else {
-    forward();
-  }
+  if (leftSensor()) { run(LOW,LOW,HIGH,LOW); }
+  if (rightSensor()) { run(HIGH,LOW,LOW,LOW); }
+  else { run(HIGH,LOW,HIGH,LOW); }
 }
 
 void loop() {
   runLoop();
+  delay(100);
 }
